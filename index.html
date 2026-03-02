@@ -1,14 +1,79 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏛️ 소소한 재판소 (The Petty Court)</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+    <div class="court-container">
+        <header>
+            <h1>🏛️ 소소한 재판소</h1>
+            <p class="subtitle">The Petty Court</p>
+        </header>
+
+        <main id="app">
+            <!-- 메인 입력 화면 -->
+            <section id="input-screen" class="screen active">
+                <div class="court-card">
+                    <div class="input-group">
+                        <label for="plaintiff">원고의 주장 (Plaintiff)</label>
+                        <textarea id="plaintiff" placeholder="예: 탕수육은 찍먹이 근본이다!"></textarea>
+                    </div>
+                    
+                    <div class="divider">VS</div>
+
+                    <div class="input-group">
+                        <label for="defendant">피고의 주장 (Defendant)</label>
+                        <textarea id="defendant" placeholder="예: 소스를 부어야 고기에 잘 배어든다!"></textarea>
+                    </div>
+
+                    <button id="judge-btn" class="hammer-btn">
+                        <span class="hammer-icon">🔨</span>
+                        엄숙하게 판결 내리기
+                    </button>
+                </div>
+            </section>
+
+            <!-- 로딩 화면 -->
+            <section id="loading-screen" class="screen">
+                <div class="loading-content">
+                    <div class="gavel-animation">🔨</div>
+                    <p id="loading-text">판사님이 판례를 뒤지는 중...</p>
+                </div>
+            </section>
+
+            <!-- 결과 화면 -->
+            <section id="result-screen" class="screen">
+                <div class="result-card">
+                    <div class="winner-badge">승자: <span id="winner-name">원고</span></div>
+                    <div class="verdict-content">
+                        <h2 id="verdict-title">"소스 눅눅함 방조죄"</h2>
+                        <div class="verdict-body">
+                            <p id="verdict-text">본 법정은 탕수육의 바삭함이 식감의 80%를 차지한다는 점을 인정하는 바이다. 피고의 '배어든다'는 주장은 고기의 주권을 침해하는 행위로 간주하여 유죄를 선고한다.</p>
+                        </div>
+                        <div class="punishment">
+                            <strong>형량/벌칙:</strong> <span id="punishment-text">오늘 저녁 쏘기</span>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button id="restart-btn" class="secondary-btn">다시 재판하기</button>
+                        <button id="share-btn" class="accent-btn">판결문 공유하기</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2026 소소한 재판소. 모든 판결은 위트가 우선입니다.</p>
+        </footer>
+    </div>
+
+    <script type="module" src="main.js"></script>
 </body>
 </html>
