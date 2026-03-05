@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>누구 잘못?</title>
+    <title id="title">누구 잘못?</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,9 +13,13 @@
 <body>
     <div class="court-container">
         <header>
-            <h1>누구 잘못?</h1>
-            <p class="subtitle">Who's at Fault?</p>
-            <p class="description">친구, 연인 사이의 사소한 다툼, AI 판사가 명쾌하게 판결해드립니다!</p>
+            <div class="lang-switcher">
+                <button id="lang-ko" class="lang-btn active">KO</button>
+                <button id="lang-en" class="lang-btn">EN</button>
+            </div>
+            <h1 id="header-title">누구 잘못?</h1>
+            <p id="header-subtitle" class="subtitle">Who's at Fault?</p>
+            <p id="header-description" class="description">친구, 연인 사이의 사소한 다툼, AI 판사가 명쾌하게 판결해드립니다!</p>
         </header>
 
         <main id="app">
@@ -23,24 +27,24 @@
             <section id="input-screen" class="screen active">
                 <div class="court-card">
                     <div class="input-group">
-                        <label for="plaintiff-name">원고 이름</label>
+                        <label for="plaintiff-name" id="label-plaintiff-name">원고 이름</label>
                         <input type="text" id="plaintiff-name" placeholder="예: 김철수">
-                        <label for="plaintiff">원고의 주장</label>
+                        <label for="plaintiff" id="label-plaintiff-claim">원고의 주장</label>
                         <textarea id="plaintiff" placeholder="예: 탕수육은 찍먹이 근본이다!"></textarea>
                     </div>
                     
                     <div class="divider">VS</div>
 
                     <div class="input-group">
-                        <label for="defendant-name">피고 이름</label>
+                        <label for="defendant-name" id="label-defendant-name">피고 이름</label>
                         <input type="text" id="defendant-name" placeholder="예: 이영희">
-                        <label for="defendant">피고의 주장</label>
+                        <label for="defendant" id="label-defendant-claim">피고의 주장</label>
                         <textarea id="defendant" placeholder="예: 소스를 부어야 고기에 잘 배어든다!"></textarea>
                     </div>
 
                     <button id="judge-btn" class="hammer-btn">
                         <span class="hammer-icon">🔨</span>
-                        엄숙하게 판결 내리기
+                        <span id="btn-judge">엄숙하게 판결 내리기</span>
                     </button>
                 </div>
             </section>
@@ -56,14 +60,14 @@
             <!-- 결과 화면 -->
             <section id="result-screen" class="screen">
                 <div class="result-card">
-                    <div class="winner-badge">승자: <span id="winner-name">원고</span></div>
+                    <div class="winner-badge"><span id="winner-label">승자</span>: <span id="winner-name">원고</span></div>
                     <div class="verdict-content">
                         <h2 id="verdict-title">"소스 눅눅함 방조죄"</h2>
                         <div class="verdict-body">
                             <p id="verdict-text">본 법정은 탕수육의 바삭함이 식감의 80%를 차지한다는 점을 인정하는 바이다. 피고의 '배어든다'는 주장은 고기의 주권을 침해하는 행위로 간주하여 유죄를 선고한다.</p>
                         </div>
                         <div class="punishment">
-                            <strong>형량/벌칙:</strong> <span id="punishment-text">오늘 저녁 쏘기</span>
+                            <strong id="punishment-label">형량/벌칙:</strong> <span id="punishment-text">오늘 저녁 쏘기</span>
                         </div>
                     </div>
                     
@@ -76,7 +80,7 @@
         </main>
 
         <footer>
-            <p>© 2026 누구 잘못?. 모든 판결은 위트가 우선입니다.</p>
+            <p id="footer-text">© 2026 누구 잘못?. 모든 판결은 위트가 우선입니다.</p>
         </footer>
     </div>
 

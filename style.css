@@ -47,12 +47,40 @@ header h1 {
     letter-spacing: -1px;
 }
 
-.subtitle {
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 4px;
+.lang-switcher {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.lang-btn {
+    padding: 6px 12px;
+    border: 2px solid var(--secondary-color);
+    background: transparent;
     color: var(--secondary-color);
+    border-radius: 6px;
+    font-size: 0.8rem;
     font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.lang-btn.active {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.lang-btn:hover:not(.active) {
+    background: rgba(133, 106, 93, 0.1);
+}
+
+.description {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-top: 10px;
+    font-style: italic;
+    opacity: 0.8;
 }
 
 .screen {
