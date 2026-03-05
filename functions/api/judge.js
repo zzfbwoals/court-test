@@ -2,7 +2,7 @@ export async function onRequestPost(context) {
   const { request, env } = context;
 
   try {
-    const { plaintiff, defendant } = await request.json();
+    const { plaintiff, defendant, plaintiffName, defendantName } = await request.json();
 
     if (!plaintiff || !defendant) {
       return new Response(JSON.stringify({ error: "Plaintiff and defendant claims are required." }), {
@@ -19,26 +19,33 @@ export async function onRequestPost(context) {
       });
     }
 
+    const pName = plaintiffName || "원고";
+    const dName = defendantName || "피고";
+
     const prompt = `
-      You are an "AI Judge" in a humorous court called "The Petty Court" (소소한 재판소).
+      You are an "AI Judge" in a humorous court called "누구 잘못?" (Who's at Fault?).
       Your job is to settle minor disputes between friends or couples with a mix of solemnity and wit.
       
+      Plaintiff's Name: "${pName}"
       Plaintiff's Claim: "${plaintiff}"
+      
+      Defendant's Name: "${dName}"
       Defendant's Claim: "${defendant}"
       
       Please provide a judgment in the following JSON format:
       {
-        "winner": "원고" or "피고",
+        "winner": "The actual name of the winner (either '${pName}' or '${dName}')",
         "title": "A creative and funny title for the crime/case (e.g., '소스 눅눅함 방조죄')",
-        "text": "A 3-4 sentence formal yet humorous verdict explanation in Korean.",
-        "punishment": "A funny and lighthearted punishment or penalty."
+        "text": "A 3-4 sentence formal yet humorous verdict explanation in Korean, explicitly using the names '${pName}' and '${dName}'.",
+        "punishment": "A funny and lighthearted punishment or penalty that MUST be performed by the LOSER (the person who did NOT win) for the benefit of the winner."
       }
+      
+      CRITICAL RULE: The "punishment" must ALWAYS be an obligation or task for the LOSER to do for the winner. NEVER punish the winner.
       
       Respond ONLY with the JSON object.
     `;
 
-    // Updated model to gemini-2.5-flash and using X-goog-api-key header
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
