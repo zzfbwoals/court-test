@@ -27,6 +27,8 @@ const translations = {
         btnRestart: "다시 재판하기",
         footerText: "© 2026 누구 잘못?. 모든 판결은 위트가 우선입니다.",
         alertInput: "원고와 피고의 주장을 모두 입력해주시옵소서.",
+        alertMinLength: "주장은 최소 10자 이상, 단어 2개 이상으로 구체적으로 입력해주셔야 판결이 가능합니다.",
+        alertNameLength: "이름은 2자 이상 입력해주세요.",
         shareTitle: "[누구 잘못? 판결문]",
         shareWinner: "승자",
         shareCrime: "죄목",
@@ -62,6 +64,8 @@ const translations = {
         btnRestart: "Restart Trial",
         footerText: "© 2026 Who's at Fault?. Wit comes first in all judgments.",
         alertInput: "Please enter both plaintiff and defendant claims.",
+        alertMinLength: "Claims must be at least 10 characters long and contain at least 2 words.",
+        alertNameLength: "Names must be at least 2 characters long.",
         shareTitle: "[Who's at Fault? Verdict]",
         shareWinner: "Winner",
         shareCrime: "Crime",
@@ -141,8 +145,20 @@ async function startJudgment() {
     const plaintiff = plaintiffInput.value.trim();
     const defendant = defendantInput.value.trim();
 
+    // 입력값 검증
     if (!plaintiff || !defendant) {
         alert(t.alertInput);
+        return;
+    }
+
+    if (pName.length < 2 || dName.length < 2) {
+        alert(t.alertNameLength);
+        return;
+    }
+
+    const wordCount = (str) => str.split(/\s+/).filter(w => w.length > 0).length;
+    if (plaintiff.length < 10 || wordCount(plaintiff) < 2 || defendant.length < 10 || wordCount(defendant) < 2) {
+        alert(t.alertMinLength);
         return;
     }
 

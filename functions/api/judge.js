@@ -4,8 +4,29 @@ export async function onRequestPost(context) {
   try {
     const { plaintiff, defendant, plaintiffName, defendantName, lang = "ko" } = await request.json();
 
+    const pName = plaintiffName || (lang === "ko" ? "원고" : "Plaintiff");
+    const dName = defendantName || (lang === "ko" ? "피고" : "Defendant");
+
+    // 기본 필수값 확인
     if (!plaintiff || !defendant) {
       return new Response(JSON.stringify({ error: lang === "ko" ? "원고와 피고의 주장이 필요합니다." : "Plaintiff and defendant claims are required." }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // 이름 길이 확인
+    if (pName.trim().length < 2 || dName.trim().length < 2) {
+      return new Response(JSON.stringify({ error: lang === "ko" ? "이름은 최소 2자 이상이어야 합니다." : "Names must be at least 2 characters long." }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // 주장 길이 및 단어 수 확인
+    const wordCount = (str) => str.trim().split(/\s+/).filter(w => w.length > 0).length;
+    if (plaintiff.trim().length < 10 || wordCount(plaintiff) < 2 || defendant.trim().length < 10 || wordCount(defendant) < 2) {
+      return new Response(JSON.stringify({ error: lang === "ko" ? "주장은 최소 10자 이상, 2단어 이상이어야 합니다." : "Claims must be at least 10 characters long and contain at least 2 words." }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       });
@@ -18,9 +39,6 @@ export async function onRequestPost(context) {
         headers: { "Content-Type": "application/json" },
       });
     }
-
-    const pName = plaintiffName || (lang === "ko" ? "원고" : "Plaintiff");
-    const dName = defendantName || (lang === "ko" ? "피고" : "Defendant");
 
     const prompt = lang === "ko" 
       ? `
@@ -66,7 +84,7 @@ export async function onRequestPost(context) {
       Respond ONLY with the JSON object.
       `;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
