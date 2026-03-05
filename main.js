@@ -21,16 +21,19 @@ const translations = {
         ],
         winnerLabel: "승자",
         punishmentLabel: "형량/벌칙:",
+        btnSaveImg: "이미지 저장",
+        btnShareApi: "공유하기",
+        btnCopyLink: "링크 복사",
         btnRestart: "다시 재판하기",
-        btnShare: "판결문 공유하기",
         footerText: "© 2026 누구 잘못?. 모든 판결은 위트가 우선입니다.",
         alertInput: "원고와 피고의 주장을 모두 입력해주시옵소서.",
         shareTitle: "[누구 잘못? 판결문]",
         shareWinner: "승자",
         shareCrime: "죄목",
-        shareContent: "내용",
         sharePunishment: "형량",
-        copySuccess: "판결문이 복사되었습니다. 원하는 곳에 붙여넣으세요!"
+        copySuccess: "링크가 복사되었습니다!",
+        saveSuccess: "이미지 저장을 시작합니다...",
+        shareError: "공유 기능을 사용할 수 없는 환경입니다."
     },
     en: {
         title: "Who's at Fault?",
@@ -53,16 +56,19 @@ const translations = {
         ],
         winnerLabel: "Winner",
         punishmentLabel: "Sentence/Penalty:",
+        btnSaveImg: "Save Image",
+        btnShareApi: "Share",
+        btnCopyLink: "Copy Link",
         btnRestart: "Restart Trial",
-        btnShare: "Share Verdict",
         footerText: "© 2026 Who's at Fault?. Wit comes first in all judgments.",
         alertInput: "Please enter both plaintiff and defendant claims.",
         shareTitle: "[Who's at Fault? Verdict]",
         shareWinner: "Winner",
         shareCrime: "Crime",
-        shareContent: "Content",
         sharePunishment: "Penalty",
-        copySuccess: "Verdict copied to clipboard. Paste it anywhere!"
+        copySuccess: "Link copied to clipboard!",
+        saveSuccess: "Saving image...",
+        shareError: "Sharing is not supported in this browser."
     }
 };
 
@@ -87,58 +93,51 @@ const verdictTitle = document.getElementById('verdict-title');
 const verdictText = document.getElementById('verdict-text');
 const punishmentText = document.getElementById('punishment-text');
 
+const saveImgBtn = document.getElementById('save-img-btn');
+const shareApiBtn = document.getElementById('share-api-btn');
+const copyLinkBtn = document.getElementById('copy-link-btn');
 const restartBtn = document.getElementById('restart-btn');
-const shareBtn = document.getElementById('share-btn');
 
-// 언어 전환 버튼
 const langBtns = {
     ko: document.getElementById('lang-ko'),
     en: document.getElementById('lang-en')
 };
 
-// UI 언어 업데이트 함수
 function updateUI() {
     const t = translations[currentLang];
-    
     document.getElementById('title').textContent = t.title;
     document.getElementById('header-title').textContent = t.headerTitle;
     document.getElementById('header-description').textContent = t.headerDescription;
-    
     document.getElementById('label-plaintiff-name').textContent = t.labelPlaintiffName;
     plaintiffNameInput.placeholder = t.placeholderPlaintiffName;
     document.getElementById('label-plaintiff-claim').textContent = t.labelPlaintiffClaim;
     plaintiffInput.placeholder = t.placeholderPlaintiffClaim;
-    
     document.getElementById('label-defendant-name').textContent = t.labelDefendantName;
     defendantNameInput.placeholder = t.placeholderDefendantName;
     document.getElementById('label-defendant-claim').textContent = t.labelDefendantClaim;
     defendantInput.placeholder = t.placeholderDefendantClaim;
-    
     document.getElementById('btn-judge').textContent = t.btnJudge;
     document.getElementById('winner-label').textContent = t.winnerLabel;
     document.getElementById('punishment-label').textContent = t.punishmentLabel;
-    
+    document.getElementById('btn-save-img').textContent = t.btnSaveImg;
+    document.getElementById('btn-share-api').textContent = t.btnShareApi;
+    document.getElementById('btn-copy-link').textContent = t.btnCopyLink;
     restartBtn.textContent = t.btnRestart;
-    shareBtn.textContent = t.btnShare;
     document.getElementById('footer-text').textContent = t.footerText;
-
-    // 버튼 활성화 상태
     Object.keys(langBtns).forEach(lang => {
         langBtns[lang].classList.toggle('active', lang === currentLang);
     });
 }
 
-// 화면 전환 함수
 function showScreen(screenId) {
     Object.values(screens).forEach(screen => screen.classList.remove('active'));
     screens[screenId].classList.add('active');
 }
 
-// 판결 내리기 로직
 async function startJudgment() {
     const t = translations[currentLang];
-    const plaintiffName = plaintiffNameInput.value.trim() || (currentLang === 'ko' ? "원고" : "Plaintiff");
-    const defendantName = defendantNameInput.value.trim() || (currentLang === 'ko' ? "피고" : "Defendant");
+    const pName = plaintiffNameInput.value.trim() || (currentLang === 'ko' ? "원고" : "Plaintiff");
+    const dName = defendantNameInput.value.trim() || (currentLang === 'ko' ? "피고" : "Defendant");
     const plaintiff = plaintiffInput.value.trim();
     const defendant = defendantInput.value.trim();
 
@@ -147,10 +146,7 @@ async function startJudgment() {
         return;
     }
 
-    // 로딩 화면 전환
     showScreen('loading');
-    
-    // 로딩 텍스트 랜덤 변경 효과
     const loadingTexts = t.loadingTexts;
     let textIdx = 0;
     loadingText.textContent = loadingTexts[0];
@@ -162,25 +158,14 @@ async function startJudgment() {
     try {
         const response = await fetch('/api/judge', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-                plaintiff, 
-                defendant, 
-                plaintiffName, 
-                defendantName,
-                lang: currentLang
-            }),
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ plaintiff, defendant, plaintiffName: pName, defendantName: dName, lang: currentLang }),
         });
-
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.error || 'API call failed');
         }
-
         const data = await response.json();
-        
         clearInterval(interval);
         renderVerdict(data);
         showScreen('result');
@@ -192,7 +177,6 @@ async function startJudgment() {
     }
 }
 
-// 판결 결과 렌더링
 function renderVerdict(data) {
     winnerName.textContent = data.winner;
     verdictTitle.textContent = `"${data.title}"`;
@@ -200,7 +184,45 @@ function renderVerdict(data) {
     punishmentText.textContent = data.punishment;
 }
 
-// 초기화 함수
+function saveAsImage() {
+    const t = translations[currentLang];
+    const area = document.getElementById('capture-area');
+    html2canvas(area, {
+        backgroundColor: "#DFE0E2",
+        scale: 2, // 고화질
+        useCORS: true
+    }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `verdict-${Date.now()}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    });
+}
+
+function shareViaApi() {
+    const t = translations[currentLang];
+    const text = `${t.shareTitle}\n\n${t.shareWinner}: ${winnerName.textContent}\n${t.shareCrime}: ${verdictTitle.textContent}\n\n#WhosAtFault #AIJudge`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: t.title,
+            text: text,
+            url: window.location.href
+        }).catch(console.error);
+    } else {
+        alert(t.shareError);
+        copyToClipboard();
+    }
+}
+
+function copyToClipboard() {
+    const t = translations[currentLang];
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+        alert(t.copySuccess);
+    });
+}
+
 function resetApp() {
     plaintiffNameInput.value = "";
     defendantNameInput.value = "";
@@ -209,36 +231,15 @@ function resetApp() {
     showScreen('input');
 }
 
-// 공유 기능 (텍스트 복사)
-function shareVerdict() {
-    const t = translations[currentLang];
-    const text = `${t.shareTitle}\n\n${t.shareWinner}: ${winnerName.textContent}\n${t.shareCrime}: ${verdictTitle.textContent}\n${t.shareContent}: ${verdictText.textContent}\n${t.sharePunishment}: ${punishmentText.textContent}\n\n#WhosAtFault #AIJudge`;
-    
-    navigator.clipboard.writeText(text).then(() => {
-        alert(t.copySuccess);
-    }).catch(err => {
-        console.error('Copy failed:', err);
-    });
-}
-
-// 이벤트 리스너
 judgeBtn.addEventListener('click', startJudgment);
 restartBtn.addEventListener('click', resetApp);
-shareBtn.addEventListener('click', shareVerdict);
+saveImgBtn.addEventListener('click', saveAsImage);
+shareApiBtn.addEventListener('click', shareViaApi);
+copyLinkBtn.addEventListener('click', copyToClipboard);
 
-langBtns.ko.addEventListener('click', () => {
-    currentLang = 'ko';
-    localStorage.setItem('lang', 'ko');
-    updateUI();
-});
+langBtns.ko.addEventListener('click', () => { currentLang = 'ko'; localStorage.setItem('lang', 'ko'); updateUI(); });
+langBtns.en.addEventListener('click', () => { currentLang = 'en'; localStorage.setItem('lang', 'en'); updateUI(); });
 
-langBtns.en.addEventListener('click', () => {
-    currentLang = 'en';
-    localStorage.setItem('lang', 'en');
-    updateUI();
-});
-
-// 초기 실행
 window.addEventListener('load', () => {
     updateUI();
     plaintiffNameInput.focus();

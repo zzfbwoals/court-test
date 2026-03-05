@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <!-- 이미지 캡처를 위한 라이브러리 -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
     <div class="court-container">
@@ -58,22 +60,30 @@
 
             <!-- 결과 화면 -->
             <section id="result-screen" class="screen">
-                <div class="result-card">
-                    <div class="winner-badge"><span id="winner-label">승자</span>: <span id="winner-name">원고</span></div>
-                    <div class="verdict-content">
-                        <h2 id="verdict-title">"소스 눅눅함 방조죄"</h2>
-                        <div class="verdict-body">
-                            <p id="verdict-text">본 법정은 탕수육의 바삭함이 식감의 80%를 차지한다는 점을 인정하는 바이다. 피고의 '배어든다'는 주장은 고기의 주권을 침해하는 행위로 간주하여 유죄를 선고한다.</p>
+                <div id="capture-area">
+                    <div class="result-card">
+                        <div class="winner-badge"><span id="winner-label">승자</span>: <span id="winner-name">원고</span></div>
+                        <div class="verdict-content">
+                            <h2 id="verdict-title">"소스 눅눅함 방조죄"</h2>
+                            <div class="verdict-body">
+                                <p id="verdict-text">본 법정은 탕수육의 바삭함이 식감의 80%를 차지한다는 점을 인정하는 바이다. 피고의 '배어든다'는 주장은 고기의 주권을 침해하는 행위로 간주하여 유죄를 선고한다.</p>
+                            </div>
+                            <div class="punishment">
+                                <strong id="punishment-label">형량/벌칙:</strong> <span id="punishment-text">오늘 저녁 쏘기</span>
+                            </div>
                         </div>
-                        <div class="punishment">
-                            <strong id="punishment-label">형량/벌칙:</strong> <span id="punishment-text">오늘 저녁 쏘기</span>
-                        </div>
+                        <p class="watermark">WhosAtFault.pages.dev</p>
                     </div>
-                    
-                    <div class="btn-group">
-                        <button id="restart-btn" class="secondary-btn">다시 재판하기</button>
-                        <button id="share-btn" class="accent-btn">판결문 공유하기</button>
-                    </div>
+                </div>
+                
+                <div class="share-options">
+                    <button id="save-img-btn" class="icon-btn">🖼️ <span id="btn-save-img">이미지 저장</span></button>
+                    <button id="share-api-btn" class="icon-btn">💬 <span id="btn-share-api">공유하기</span></button>
+                    <button id="copy-link-btn" class="icon-btn">🔗 <span id="btn-copy-link">링크 복사</span></button>
+                </div>
+
+                <div class="btn-group">
+                    <button id="restart-btn" class="secondary-btn">다시 재판하기</button>
                 </div>
             </section>
         </main>

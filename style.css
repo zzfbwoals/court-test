@@ -208,11 +208,53 @@ input[type="text"]:focus, textarea:focus {
     font-size: 1.4rem;
 }
 
-.btn-group {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+.watermark {
+    font-size: 0.7rem;
+    color: var(--secondary-color);
+    margin-top: 20px;
+    opacity: 0.5;
+    text-align: center;
+}
+
+.share-options {
+    display: flex;
+    justify-content: center;
     gap: 15px;
     margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.icon-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 2px solid #eee;
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: all 0.2s;
+    min-width: 90px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.icon-btn:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+#capture-area {
+    padding: 10px;
+    background: var(--bg-color);
+    border-radius: 20px;
+}
+
+.btn-group {
+    margin-top: 20px;
 }
 
 .secondary-btn, .accent-btn {
