@@ -107,7 +107,7 @@ function resetApp() {
 
 // 공유 기능 (텍스트 복사)
 function shareVerdict() {
-    const text = `🏛️ [누구 잘못? 판결문] 🏛️\n\n승자: ${winnerName.textContent}\n죄목: ${verdictTitle.textContent}\n내용: ${verdictText.textContent}\n형량: ${punishmentText.textContent}\n\n#누구잘못 #AI판사 #커플싸움`;
+    const text = `[누구 잘못? 판결문]\n\n승자: ${winnerName.textContent}\n죄목: ${verdictTitle.textContent}\n내용: ${verdictText.textContent}\n형량: ${punishmentText.textContent}\n\n#누구잘못 #AI판사 #커플싸움`;
     
     navigator.clipboard.writeText(text).then(() => {
         alert("판결문이 복사되었습니다. 원하는 곳에 붙여넣으세요!");
