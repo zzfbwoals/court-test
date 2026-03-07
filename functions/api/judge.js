@@ -55,8 +55,8 @@ export async function onRequestPost(context) {
       {
         "winner": "승자의 실제 이름 ('${pName}' 또는 '${dName}')",
         "title": "사건에 대한 창의적이고 웃긴 죄명/제목 (예: '소스 눅눅함 방조죄')",
-        "text": "'${pName}'과 '${dName}'의 이름을 명시하여, 격식 있으면서도 유머러스한 판결문(5~6문장)을 한국어로 작성하세요. 문장 사이에 적절한 줄바꿈(\\n)을 포함하여 가독성을 높여주세요.",
-        "punishment": "패자(이기지 못한 사람)가 승자를 위해 수행해야 하는 가볍고 재미있는 형량이나 벌칙. 내용이 길 경우 줄바꿈(\\n)을 활용하세요."
+        "text": "'${pName}'과 '${dName}'의 이름을 명시하여, 격식 있으면서도 유머러스한 판결문(5~6문장)을 한국어로 작성하세요. 가독성을 위해 반드시 2문장마다 줄바꿈 두 번(\\\\n\\\\n)을 넣어 문단을 명확히 나누세요. 한 덩어리로 쓰지 마세요.",
+        "punishment": "패자(이기지 못한 사람)가 승자를 위해 수행해야 하는 가볍고 재미있는 형량이나 벌칙. 내용이 길 경우 줄바꿈(\\\\n)을 적절히 활용하세요."
       }
       
       중요 규칙: 벌칙(punishment)은 반드시 패자가 승자를 위해 해야 하는 일이어야 합니다. 승자에게 벌을 주지 마세요.
@@ -76,8 +76,8 @@ export async function onRequestPost(context) {
       {
         "winner": "The actual name of the winner (either '${pName}' or '${dName}')",
         "title": "A creative and funny title for the crime/case (e.g., 'The Crime of Sogginess Negligence')",
-        "text": "A 5-6 sentence formal yet humorous verdict explanation in English, explicitly using the names '${pName}' and '${dName}'. Use appropriate line breaks (\\n) between sentences for readability.",
-        "punishment": "A funny and lighthearted punishment or penalty that MUST be performed by the LOSER for the benefit of the winner. Use line breaks (\\n) if necessary."
+        "text": "A 5-6 sentence formal yet humorous verdict explanation in English, explicitly using the names '${pName}' and '${dName}'. CRITICAL: Insert double line breaks (\\\\n\\\\n) every 2 sentences to split into paragraphs for readability. DO NOT write as a single block.",
+        "punishment": "A funny and lighthearted punishment or penalty that MUST be performed by the LOSER for the benefit of the winner. Use line breaks (\\\\n) if necessary."
       }
       
       CRITICAL RULE: The "punishment" must ALWAYS be an obligation or task for the LOSER to do for the winner. NEVER punish the winner.
