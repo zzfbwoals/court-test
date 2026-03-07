@@ -55,7 +55,7 @@ export async function onRequestPost(context) {
       {
         "winner": "승자의 실제 이름 ('${pName}' 또는 '${dName}')",
         "title": "사건에 대한 창의적이고 웃긴 죄명/제목 (예: '소스 눅눅함 방조죄')",
-        "text": "'${pName}'과 '${dName}'의 이름을 명시하여, 격식 있으면서도 유머러스한 판결문(3~4문장)을 한국어로 작성하세요.",
+        "text": "'${pName}'과 '${dName}'의 이름을 명시하여, 격식 있으면서도 유머러스한 판결문(5~6문장)을 한국어로 작성하세요.",
         "punishment": "패자(이기지 못한 사람)가 승자를 위해 수행해야 하는 가볍고 재미있는 형량이나 벌칙."
       }
       
@@ -76,7 +76,7 @@ export async function onRequestPost(context) {
       {
         "winner": "The actual name of the winner (either '${pName}' or '${dName}')",
         "title": "A creative and funny title for the crime/case (e.g., 'The Crime of Sogginess Negligence')",
-        "text": "A 3-4 sentence formal yet humorous verdict explanation in English, explicitly using the names '${pName}' and '${dName}'.",
+        "text": "A 5-6 sentence formal yet humorous verdict explanation in English, explicitly using the names '${pName}' and '${dName}'.",
         "punishment": "A funny and lighthearted punishment or penalty that MUST be performed by the LOSER for the benefit of the winner."
       }
       
