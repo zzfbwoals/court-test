@@ -1,0 +1,13 @@
+{
+  "name": "court-test",
+  "version": "1.0.0",
+  "description": "Who's at Fault? - AI Judge App",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler pages dev public --kv VERDICTS",
+    "deploy": "wrangler pages deploy public"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}

@@ -70,36 +70,6 @@ function showScreen(screenId) {
     screens[screenId].classList.add('active');
 }
 
-// 판결 데이터를 URL용 Base64로 인코딩
-function encodeVerdict(data) {
-    try {
-        const str = JSON.stringify(data);
-        return btoa(encodeURIComponent(str));
-    } catch (e) {
-        console.error("Encoding failed", e);
-        return null;
-    }
-}
-
-// URL용 Base64를 판결 데이터로 디코딩
-function decodeVerdict(encoded) {
-    try {
-        const str = decodeURIComponent(atob(encoded));
-        return JSON.parse(str);
-    } catch (e) {
-        console.error("Decoding failed", e);
-        return null;
-    }
-}
-
-// 공유용 URL 생성
-function getShareUrl(data) {
-    const encoded = encodeVerdict(data);
-    const url = new URL(window.location.origin + window.location.pathname);
-    if (encoded) url.searchParams.set('v', encoded);
-    return url.toString();
-}
-
 // 현재 표시 중인 판결 데이터를 객체로 추출
 function getCurrentVerdictData() {
     return {
@@ -108,6 +78,26 @@ function getCurrentVerdictData() {
         text: verdictText.innerHTML.replace(/<br>/g, '\n'),
         punishment: punishmentText.innerHTML.replace(/<br>/g, '\n')
     };
+}
+
+// 서버에 판결 데이터를 저장하고 짧은 URL을 생성
+async function createShareUrl() {
+    const data = getCurrentVerdictData();
+    try {
+        const response = await fetch('/api/share', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) throw new Error("Failed to save sharing data");
+        const { id } = await response.json();
+        const url = new URL(window.location.origin + window.location.pathname);
+        url.searchParams.set('s', id); // 's'는 short ID 파라미터
+        return url.toString();
+    } catch (e) {
+        console.error("Link shortening failed", e);
+        return window.location.href; // 실패 시 기본 URL 반환
+    }
 }
 
 async function startJudgment() {
@@ -187,11 +177,11 @@ function saveAsImage() {
     });
 }
 
-function shareViaApi() {
+async function shareViaApi() {
     const t = translations[currentLang];
     const data = getCurrentVerdictData();
-    const shareUrl = getShareUrl(data);
-    const text = `${t.shareTitle}\n\n${t.shareWinner}: ${data.winner}\n${t.shareCrime}: ${data.title}\n\n${t.sharePunishment}: ${data.punishment}\n\n판결 확인하기:\n${shareUrl}\n\n#WhosAtFault #AIJudge`;
+    const shareUrl = await createShareUrl();
+    const text = `${t.shareTitle}\n\n${t.shareWinner}: ${data.winner}\n${t.shareCrime}: ${data.title}\n\n판결 확인하기:\n${shareUrl}\n\n#WhosAtFault #AIJudge`;
     
     if (navigator.share) {
         navigator.share({
@@ -204,12 +194,12 @@ function shareViaApi() {
     }
 }
 
-function copyToClipboard(customUrl) {
+async function copyToClipboard(customUrl) {
     const t = translations[currentLang];
     const data = getCurrentVerdictData();
-    const shareUrl = customUrl || getShareUrl(data);
+    const shareUrl = customUrl || await createShareUrl();
     
-    const textToCopy = `${t.shareTitle}\n\n${t.shareWinner}: ${data.winner}\n${t.shareCrime}: ${data.title}\n\n${t.sharePunishment}: ${data.punishment}\n\n판결 확인하기: ${shareUrl}`;
+    const textToCopy = `${t.shareTitle}\n\n${t.shareWinner}: ${data.winner}\n${t.shareCrime}: ${data.title}\n\n판결 확인하기: ${shareUrl}`;
     
     navigator.clipboard.writeText(textToCopy).then(() => {
         alert(t.copySuccess);
@@ -217,10 +207,8 @@ function copyToClipboard(customUrl) {
 }
 
 function resetApp() {
-    // URL 파라미터 제거하여 초기 화면으로
     const url = new URL(window.location.origin + window.location.pathname);
     window.history.replaceState({}, '', url);
-    
     plaintiffNameInput.value = "";
     defendantNameInput.value = "";
     plaintiffInput.value = "";
@@ -228,16 +216,21 @@ function resetApp() {
     showScreen('input');
 }
 
-// URL 파라미터에 판결 데이터가 있는지 확인
-function checkSharedVerdict() {
+// URL 파라미터에 짧은 ID가 있는지 확인하여 판결문 불러오기
+async function checkSharedVerdict() {
     const urlParams = new URLSearchParams(window.location.search);
-    const encoded = urlParams.get('v');
-    if (encoded) {
-        const data = decodeVerdict(encoded);
-        if (data) {
-            renderVerdict(data);
-            showScreen('result');
-            return true;
+    const shortId = urlParams.get('s');
+    if (shortId) {
+        try {
+            const response = await fetch(`/api/share?id=${shortId}`);
+            if (response.ok) {
+                const data = await response.json();
+                renderVerdict(data);
+                showScreen('result');
+                return true;
+            }
+        } catch (e) {
+            console.error("Loading shared verdict failed", e);
         }
     }
     return false;
@@ -247,15 +240,16 @@ judgeBtn.addEventListener('click', startJudgment);
 restartBtn.addEventListener('click', resetApp);
 saveImgBtn.addEventListener('click', saveAsImage);
 shareApiBtn.addEventListener('click', shareViaApi);
-copyLinkBtn.addEventListener('click', copyToClipboard);
+copyLinkBtn.addEventListener('click', () => copyToClipboard());
 
 langBtns.ko.addEventListener('click', () => { currentLang = 'ko'; localStorage.setItem('lang', 'ko'); updateUI(); });
 langBtns.en.addEventListener('click', () => { currentLang = 'en'; localStorage.setItem('lang', 'en'); updateUI(); });
 
 window.addEventListener('load', () => {
     updateUI();
-    // 공유된 판결문이 있다면 표시, 없으면 입력창 포커스
-    if (!checkSharedVerdict()) {
-        plaintiffNameInput.focus();
-    }
+    checkSharedVerdict().then(isShared => {
+        if (!isShared) {
+            plaintiffNameInput.focus();
+        }
+    });
 });

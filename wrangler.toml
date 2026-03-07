@@ -1,0 +1,7 @@
+name = "court-test"
+compatibility_date = "2024-04-03"
+pages_build_output_dir = "public"
+
+[[kv_namespaces]]
+binding = "VERDICTS"
+id = "45ab25787db148eabf1d14a1c1f0b3e1"
