@@ -128,9 +128,9 @@ async function startJudgment() {
 function renderVerdict(data) {
     winnerName.textContent = data.winner;
     verdictTitle.textContent = `"${data.title}"`;
-    // 리터럴 \n 문자열을 실제 줄바꿈으로 변환하고 innerText를 사용하여 렌더링
-    verdictText.innerText = data.text.replace(/\\n/g, '\n');
-    punishmentText.innerText = data.punishment.replace(/\\n/g, '\n');
+    // \n 및 리터럴 \n 문자열을 <br> 태그로 변환하여 innerHTML로 삽입
+    verdictText.innerHTML = data.text.replace(/\\n/g, '\n').replace(/\n/g, '<br>');
+    punishmentText.innerHTML = data.punishment.replace(/\\n/g, '\n').replace(/\n/g, '<br>');
 }
 
 function saveAsImage() {
