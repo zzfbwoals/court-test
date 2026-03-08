@@ -133,17 +133,18 @@ input[type="text"], textarea {
     border: 2px solid #eee;
     border-radius: 12px;
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 16px;
     transition: all 0.3s ease;
     background-color: #f9f9f9;
 }
 
 input[type="text"] {
     margin-bottom: 15px;
+    height: 50px;
 }
 
 textarea {
-    height: 100px;
+    height: 120px;
     resize: none;
 }
 

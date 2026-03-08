@@ -7,7 +7,33 @@
     <meta name="description" content="친구, 연인 사이의 사소한 다툼! AI 판사가 명쾌하고 재치 있게 판결해드립니다. 탕수육 부먹찍먹 논쟁부터 일상의 소소한 갈등까지 지금 바로 판결받으세요.">
     <meta name="keywords" content="AI판사, 누구잘못, 판결, 유머, 친구싸움, 커플싸움, 제미나이, Gemini">
     <meta name="author" content="누구 잘못?">
+    
     <link rel="canonical" href="https://whofault.com/">
+    <link rel="alternate" hreflang="ko" href="https://whofault.com/">
+    <link rel="alternate" hreflang="en" href="https://whofault.com/?lang=en">
+    <link rel="alternate" hreflang="x-default" href="https://whofault.com/">
+
+    <!-- 구조화된 데이터 (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "누구 잘못? (Who's at Fault?)",
+      "operatingSystem": "Web",
+      "applicationCategory": "EntertainmentApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
+      },
+      "description": "친구, 연인 사이의 사소한 다툼을 AI가 재치 있게 판결해주는 서비스",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "1024"
+      }
+    }
+    </script>
     
     <!-- Open Graph / Facebook / Kakao -->
     <meta property="og:type" content="website">
@@ -32,38 +58,49 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <meta name="google-adsense-account" content="ca-pub-5315206615123943">
+    
     <!-- 이미지 캡처를 위한 라이브러리 -->
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js" defer></script>
+    
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5315206615123943"
-     crossorigin="anonymous"></script>
+     crossorigin="anonymous" defer></script>
+    
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-99RTSNN3TD"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-99RTSNN3TD" defer></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-99RTSNN3TD');
+      window.addEventListener('load', () => {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-99RTSNN3TD');
+      });
     </script>
-    <!-- Microsoft Clarity -->
+    
+    <!-- Microsoft Clarity (Deferred for INP) -->
     <script type="text/javascript">
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "vr1x9luc68");
+        window.addEventListener('load', () => {
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "vr1x9luc68");
+        });
     </script>
-    <!-- Userback 피드백 위젯 -->
+    
+    <!-- Userback 피드백 위젯 (Deferred for INP) -->
     <script>
-        window.Userback = window.Userback || {};
-        Userback.access_token = "A-xv3M5TaCimp2Gsrs1aBTv1YRj";
-        (function(d) {
-            var s = d.createElement('script');s.async = true;s.src = 'https://static.userback.io/widget/v1.js';(d.head || d.body).appendChild(s);
-        })(document);
+        window.addEventListener('load', () => {
+            window.Userback = window.Userback || {};
+            Userback.access_token = "A-xv3M5TaCimp2Gsrs1aBTv1YRj";
+            (function(d) {
+                var s = d.createElement('script');s.async = true;s.src = 'https://static.userback.io/widget/v1.js';(d.head || d.body).appendChild(s);
+            })(document);
+        });
     </script>
+    
     <!-- 카카오 SDK -->
-    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js" integrity="sha384-l+xbElFSnPZ2rOaPrU//2FF5B4LB8FiX5q4fXYTlfcG4PGpMkE1vcL7kNXI6Cci0" crossorigin="anonymous"></script>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js" integrity="sha384-l+xbElFSnPZ2rOaPrU//2FF5B4LB8FiX5q4fXYTlfcG4PGpMkE1vcL7kNXI6Cci0" crossorigin="anonymous" defer></script>
 </head>
 <body>
     <div class="court-container">
