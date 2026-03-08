@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /policy.html
 
 Sitemap: https://whofault.com/sitemap.xml
