@@ -39,6 +39,7 @@ export const translations = {
         copySuccess: "링크가 복사되었습니다!",
         saveSuccess: "이미지 저장을 시작합니다...",
         shareError: "공유 기능을 사용할 수 없는 환경입니다.",
+        alertQuotaExceeded: "판사님이 오늘 너무 많은 판결을 내려서 퇴근하셨습니다. (내일 다시 찾아주세요!)",
         extraTitle: "왜 \"누구 잘못?\" 인가요?",
         extraDescription: "우리는 일상의 작은 다툼을 웃음으로 승화시키고자 합니다. AI 판사는 딥러닝을 통해 학습된 유머 알고리즘을 사용하여, 상처받지 않으면서도 수긍할 수 있는 재치 있는 결과를 도출합니다.",
         linkAbout: "서비스 소개",

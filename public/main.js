@@ -155,10 +155,18 @@ async function startJudgment() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ plaintiff, defendant, plaintiffName: pName, defendantName: dName, lang: currentLang }),
         });
+        
         if (!response.ok) {
             const errorData = await response.json();
+            if (errorData.error === "QUOTA_EXCEEDED") {
+                clearInterval(interval);
+                alert(t.alertQuotaExceeded);
+                showScreen('input');
+                return;
+            }
             throw new Error(errorData.error || 'API call failed');
         }
+        
         const data = await response.json();
         clearInterval(interval);
         renderVerdict(data);

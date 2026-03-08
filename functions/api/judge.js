@@ -102,9 +102,22 @@ export async function onRequestPost(context) {
       }),
     });
 
+    if (response.status === 429) {
+      return new Response(JSON.stringify({ error: "QUOTA_EXCEEDED" }), {
+        status: 429,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const data = await response.json();
     
     if (data.error) {
+        if (data.error.code === 429) {
+            return new Response(JSON.stringify({ error: "QUOTA_EXCEEDED" }), {
+                status: 429,
+                headers: { "Content-Type": "application/json" },
+            });
+        }
         throw new Error(data.error.message || "Gemini API Error");
     }
 
