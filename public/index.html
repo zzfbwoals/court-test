@@ -14,6 +14,13 @@
     <link rel="alternate" hreflang="en" href="https://whofault.com/?lang=en">
     <link rel="alternate" hreflang="x-default" href="https://whofault.com/">
 
+    <!-- 자원 사전 연결 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://t1.kakaocdn.net">
+
     <!-- 구조화된 데이터 (JSON-LD) -->
     <script type="application/ld+json">
     {
@@ -76,12 +83,13 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta name="theme-color" content="#60463B">
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- 폰트 로드 최적화 (media="print" 기법으로 렌더링 차단 방지) -->
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    
     <meta name="google-adsense-account" content="ca-pub-5315206615123943">
     
-    <!-- 이미지 캡처를 위한 라이브러리 -->
+    <!-- 이미지 캡처를 위한 라이브러리 (필요한 때만 로드하도록 defer) -->
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js" defer></script>
     
     <!-- Google AdSense -->
@@ -99,29 +107,33 @@
       });
     </script>
     
-    <!-- Microsoft Clarity (Deferred for INP) -->
+    <!-- Microsoft Clarity (지연 실행으로 INP 개선) -->
     <script type="text/javascript">
         window.addEventListener('load', () => {
-            (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "vr1x9luc68");
+            setTimeout(() => {
+                (function(c,l,a,r,i,t,y){
+                    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                })(window, document, "clarity", "script", "vr1x9luc68");
+            }, 3000);
         });
     </script>
     
-    <!-- Userback 피드백 위젯 (Deferred for INP) -->
+    <!-- Userback 피드백 위젯 (지연 실행) -->
     <script>
         window.addEventListener('load', () => {
-            window.Userback = window.Userback || {};
-            Userback.access_token = "A-xv3M5TaCimp2Gsrs1aBTv1YRj";
-            (function(d) {
-                var s = d.createElement('script');s.async = true;s.src = 'https://static.userback.io/widget/v1.js';(d.head || d.body).appendChild(s);
-            })(document);
+            setTimeout(() => {
+                window.Userback = window.Userback || {};
+                Userback.access_token = "A-xv3M5TaCimp2Gsrs1aBTv1YRj";
+                (function(d) {
+                    var s = d.createElement('script');s.async = true;s.src = 'https://static.userback.io/widget/v1.js';(d.head || d.body).appendChild(s);
+                })(document);
+            }, 4000);
         });
     </script>
     
-    <!-- 카카오 SDK -->
+    <!-- 카카오 SDK (필요한 시점에 로드되도록 defer 및 무결성 수정) -->
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js" integrity="sha384-l+xbElFSnPZ2rOaPrU//2FF5B4LB8FiX5q4fXYTlfcG4PGpMkE1vcL7kNXI6Cci0" crossorigin="anonymous" defer></script>
 </head>
 <body>
