@@ -46,7 +46,6 @@ function updateUI() {
     defendantInput.placeholder = t.placeholderDefendantClaim;
     document.getElementById('btn-judge').textContent = t.btnJudge;
     document.getElementById('winner-label').textContent = t.winnerLabel;
-    document.getElementById('punishment-label').textContent = t.punishmentLabel;
     document.getElementById('btn-save-img').textContent = t.btnSaveImg;
     document.getElementById('btn-share-api').textContent = t.btnShareApi;
     document.getElementById('btn-copy-link').textContent = t.btnCopyLink;

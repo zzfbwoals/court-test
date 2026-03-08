@@ -24,7 +24,6 @@ export const translations = {
             "원고와 피고의 기싸움을 관찰 중..."
         ],
         winnerLabel: "승자",
-        punishmentLabel: "형량/벌칙:",
         btnSaveImg: "이미지 저장",
         btnShareApi: "공유하기",
         btnCopyLink: "링크 복사",
