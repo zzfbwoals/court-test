@@ -47,6 +47,35 @@ const langBtns = {
     en: document.getElementById('lang-en')
 };
 
+// --- 1일 횟수 제한 로직 ---
+function getDailyData() {
+    const data = localStorage.getItem('judgment_daily_data');
+    const today = new Date().toISOString().split('T')[0];
+    
+    if (!data) {
+        return { count: 0, lastDate: today };
+    }
+    
+    const parsed = JSON.parse(data);
+    if (parsed.lastDate !== today) {
+        return { count: 0, lastDate: today };
+    }
+    
+    return parsed;
+}
+
+function checkDailyLimit() {
+    const data = getDailyData();
+    return data.count >= 2;
+}
+
+function incrementDailyCount() {
+    const data = getDailyData();
+    data.count += 1;
+    localStorage.setItem('judgment_daily_data', JSON.stringify(data));
+}
+// -----------------------
+
 function updateUI() {
     const t = translations[currentLang];
     document.getElementById('title').textContent = t.title;
@@ -118,6 +147,13 @@ async function createShareUrl() {
 
 async function startJudgment() {
     const t = translations[currentLang];
+
+    // 1일 횟수 제한 체크
+    if (checkDailyLimit()) {
+        alert(t.alertDailyLimit);
+        return;
+    }
+
     const pName = plaintiffNameInput.value.trim() || (currentLang === 'ko' ? "원고" : "Plaintiff");
     const dName = defendantNameInput.value.trim() || (currentLang === 'ko' ? "피고" : "Defendant");
     const plaintiff = plaintiffInput.value.trim();
@@ -169,6 +205,7 @@ async function startJudgment() {
         
         const data = await response.json();
         clearInterval(interval);
+        incrementDailyCount(); // 성공 시 카운트 증가
         renderVerdict(data);
         showScreen('result');
     } catch (error) {
