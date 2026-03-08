@@ -43,7 +43,7 @@
         })(document);
     </script>
     <!-- 카카오 SDK -->
-    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js" integrity="sha384-lTLG7v9ZKN8rbpf7L79bmd6KqPLyB9JpS6C5/vD3jLg88V3zU8iHl7rL6d/XG5oG" crossorigin="anonymous"></script>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js" integrity="sha384-l+xbElFSnPZ2rOaPrU//2FF5B4LB8FiX5q4fXYTlfcG4PGpMkE1vcL7kNXI6Cci0" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="court-container">
@@ -115,15 +115,17 @@
                 </div>
                 
                 <div class="share-options">
-                    <button id="save-img-btn" class="icon-btn">🖼️ <span id="btn-save-img">이미지 저장</span></button>
-                    <div class="social-share">
+                    <div class="main-share">
+                        <button id="save-img-btn" class="icon-btn">🖼️ <span id="btn-save-img">이미지 저장</span></button>
+                        <button id="copy-link-btn" class="icon-btn">🔗 <span id="btn-copy-link">링크 복사</span></button>
+                    </div>
+                    <div class="social-share-standalone">
                         <button id="share-kakao" class="social-btn kakao" title="카카오톡 공유">
                             <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" alt="K" width="20">
                         </button>
                         <button id="share-facebook" class="social-btn facebook" title="페이스북 공유">f</button>
                         <button id="share-x" class="social-btn x" title="X 공유">𝕏</button>
                     </div>
-                    <button id="copy-link-btn" class="icon-btn">🔗 <span id="btn-copy-link">링크 복사</span></button>
                 </div>
 
                 <div class="btn-group">
