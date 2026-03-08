@@ -267,24 +267,25 @@ async function checkSharedVerdict() {
     return false;
 }
 
-judgeBtn.addEventListener('click', startJudgment);
-restartBtn.addEventListener('click', resetApp);
-saveImgBtn.addEventListener('click', saveAsImage);
+// 이벤트 리스너 등록
+if (judgeBtn) judgeBtn.addEventListener('click', startJudgment);
+if (restartBtn) restartBtn.addEventListener('click', resetApp);
+if (saveImgBtn) saveImgBtn.addEventListener('click', saveAsImage);
 
 // 소셜 공유 이벤트 리스너
 if (shareKakaoBtn) shareKakaoBtn.addEventListener('click', shareKakao);
 if (shareFacebookBtn) shareFacebookBtn.addEventListener('click', shareFacebook);
 if (shareXBtn) shareXBtn.addEventListener('click', shareX);
 
-copyLinkBtn.addEventListener('click', copyToClipboard);
+if (copyLinkBtn) copyLinkBtn.addEventListener('click', copyToClipboard);
 
-langBtns.ko.addEventListener('click', () => { currentLang = 'ko'; localStorage.setItem('lang', 'ko'); updateUI(); });
-langBtns.en.addEventListener('click', () => { currentLang = 'en'; localStorage.setItem('lang', 'en'); updateUI(); });
+if (langBtns.ko) langBtns.ko.addEventListener('click', () => { currentLang = 'ko'; localStorage.setItem('lang', 'ko'); updateUI(); });
+if (langBtns.en) langBtns.en.addEventListener('click', () => { currentLang = 'en'; localStorage.setItem('lang', 'en'); updateUI(); });
 
 window.addEventListener('load', () => {
     updateUI();
     checkSharedVerdict().then(isShared => {
-        if (!isShared) {
+        if (!isShared && plaintiffNameInput) {
             plaintiffNameInput.focus();
         }
     });
