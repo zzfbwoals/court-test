@@ -42,6 +42,8 @@
             var s = d.createElement('script');s.async = true;s.src = 'https://static.userback.io/widget/v1.js';(d.head || d.body).appendChild(s);
         })(document);
     </script>
+    <!-- 카카오 SDK -->
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js" integrity="sha384-lTLG7v9ZKN8rbpf7L79bmd6KqPLyB9JpS6C5/vD3jLg88V3zU8iHl7rL6d/XG5oG" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="court-container">
@@ -114,7 +116,13 @@
                 
                 <div class="share-options">
                     <button id="save-img-btn" class="icon-btn">🖼️ <span id="btn-save-img">이미지 저장</span></button>
-                    <button id="share-api-btn" class="icon-btn">💬 <span id="btn-share-api">공유하기</span></button>
+                    <div class="social-share">
+                        <button id="share-kakao" class="social-btn kakao" title="카카오톡 공유">
+                            <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" alt="K" width="20">
+                        </button>
+                        <button id="share-facebook" class="social-btn facebook" title="페이스북 공유">f</button>
+                        <button id="share-x" class="social-btn x" title="X 공유">𝕏</button>
+                    </div>
                     <button id="copy-link-btn" class="icon-btn">🔗 <span id="btn-copy-link">링크 복사</span></button>
                 </div>
 

@@ -222,6 +222,53 @@ input[type="text"]:focus, textarea:focus {
     gap: 15px;
     margin-top: 30px;
     flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.social-share {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: white;
+    border: 2px solid #eee;
+    padding: 0 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.social-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s, filter 0.2s;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 0;
+}
+
+.social-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.social-btn.kakao {
+    background-color: #FEE500;
+}
+
+.social-btn.facebook {
+    background-color: #1877F2;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.social-btn.x {
+    background-color: #000000;
+    color: white;
 }
 
 .icon-btn {

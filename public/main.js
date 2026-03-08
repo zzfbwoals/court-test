@@ -2,6 +2,11 @@ import { translations } from './i18n.js';
 
 let currentLang = localStorage.getItem('lang') || 'ko';
 
+// 카카오 SDK 초기화
+if (window.Kakao && !window.Kakao.isInitialized()) {
+    window.Kakao.init('7071c41242a1ef1686522e40cde9d873');
+}
+
 // DOM 요소
 const screens = {
     input: document.getElementById('input-screen'),
@@ -22,7 +27,9 @@ const verdictText = document.getElementById('verdict-text');
 const punishmentText = document.getElementById('punishment-text');
 
 const saveImgBtn = document.getElementById('save-img-btn');
-const shareApiBtn = document.getElementById('share-api-btn');
+const shareKakaoBtn = document.getElementById('share-kakao');
+const shareFacebookBtn = document.getElementById('share-facebook');
+const shareXBtn = document.getElementById('share-x');
 const copyLinkBtn = document.getElementById('copy-link-btn');
 const restartBtn = document.getElementById('restart-btn');
 
@@ -47,7 +54,6 @@ function updateUI() {
     document.getElementById('btn-judge').textContent = t.btnJudge;
     document.getElementById('winner-label').textContent = t.winnerLabel;
     document.getElementById('btn-save-img').textContent = t.btnSaveImg;
-    document.getElementById('btn-share-api').textContent = t.btnShareApi;
     document.getElementById('btn-copy-link').textContent = t.btnCopyLink;
     restartBtn.textContent = t.btnRestart;
     document.getElementById('footer-text').textContent = t.footerText;
@@ -176,31 +182,57 @@ function saveAsImage() {
     });
 }
 
-async function shareViaApi() {
+// 소셜 공유 함수들
+async function shareKakao() {
     const t = translations[currentLang];
     const data = getCurrentVerdictData();
     const shareUrl = await createShareUrl();
-    const text = `${t.shareTitle}\n\n${t.shareWinner}: ${data.winner}\n${t.shareCrime}: ${data.title}\n\n판결 확인하기:\n${shareUrl}\n\n#WhosAtFault #AIJudge`;
     
-    if (navigator.share) {
-        navigator.share({
-            title: t.title,
-            text: text,
-            url: shareUrl
-        }).catch(console.error);
-    } else {
-        copyToClipboard(shareUrl);
+    if (window.Kakao) {
+        window.Kakao.Share.sendDefault({
+            objectType: 'feed',
+            content: {
+                title: `${t.shareTitle} 승자: ${data.winner}`,
+                description: `죄목: ${data.title}\n${data.punishment}`,
+                imageUrl: window.location.origin + '/1.png', // 기본 썸네일
+                link: {
+                    mobileWebUrl: shareUrl,
+                    webUrl: shareUrl,
+                },
+            },
+            buttons: [
+                {
+                    title: '판결 확인하기',
+                    link: {
+                        mobileWebUrl: shareUrl,
+                        webUrl: shareUrl,
+                    },
+                },
+            ],
+        });
     }
 }
 
-async function copyToClipboard(customUrl) {
+async function shareFacebook() {
+    const shareUrl = await createShareUrl();
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+    window.open(url, '_blank', 'width=600,height=400');
+}
+
+async function shareX() {
     const t = translations[currentLang];
     const data = getCurrentVerdictData();
-    const shareUrl = customUrl || await createShareUrl();
+    const shareUrl = await createShareUrl();
+    const text = `${t.shareTitle}\n승자: ${data.winner}\n죄목: ${data.title}`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
+    window.open(url, '_blank', 'width=600,height=400');
+}
+
+async function copyToClipboard() {
+    const t = translations[currentLang];
+    const shareUrl = await createShareUrl();
     
-    const textToCopy = `${t.shareTitle}\n\n${t.shareWinner}: ${data.winner}\n${t.shareCrime}: ${data.title}\n\n판결 확인하기: ${shareUrl}`;
-    
-    navigator.clipboard.writeText(textToCopy).then(() => {
+    navigator.clipboard.writeText(shareUrl).then(() => {
         alert(t.copySuccess);
     });
 }
@@ -238,8 +270,13 @@ async function checkSharedVerdict() {
 judgeBtn.addEventListener('click', startJudgment);
 restartBtn.addEventListener('click', resetApp);
 saveImgBtn.addEventListener('click', saveAsImage);
-shareApiBtn.addEventListener('click', shareViaApi);
-copyLinkBtn.addEventListener('click', () => copyToClipboard());
+
+// 소셜 공유 이벤트 리스너
+if (shareKakaoBtn) shareKakaoBtn.addEventListener('click', shareKakao);
+if (shareFacebookBtn) shareFacebookBtn.addEventListener('click', shareFacebook);
+if (shareXBtn) shareXBtn.addEventListener('click', shareX);
+
+copyLinkBtn.addEventListener('click', copyToClipboard);
 
 langBtns.ko.addEventListener('click', () => { currentLang = 'ko'; localStorage.setItem('lang', 'ko'); updateUI(); });
 langBtns.en.addEventListener('click', () => { currentLang = 'en'; localStorage.setItem('lang', 'en'); updateUI(); });
