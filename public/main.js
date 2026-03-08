@@ -78,6 +78,9 @@ function incrementDailyCount() {
 
 function updateUI() {
     const t = translations[currentLang];
+    const dailyData = getDailyData();
+    const remaining = Math.max(0, 2 - dailyData.count);
+    
     document.getElementById('title').textContent = t.title;
     document.getElementById('header-title').textContent = t.headerTitle;
     document.getElementById('header-description').textContent = t.headerDescription;
@@ -89,7 +92,10 @@ function updateUI() {
     if (defendantNameInput) defendantNameInput.placeholder = t.placeholderDefendantName;
     document.getElementById('label-defendant-claim').textContent = t.labelDefendantClaim;
     if (defendantInput) defendantInput.placeholder = t.placeholderDefendantClaim;
-    document.getElementById('btn-judge').textContent = t.btnJudge;
+    
+    // 버튼에 남은 횟수 표시
+    document.getElementById('btn-judge').textContent = `${t.btnJudge} (남은 횟수: ${remaining}회)`;
+    
     document.getElementById('winner-label').textContent = t.winnerLabel;
     document.getElementById('btn-save-img').textContent = t.btnSaveImg;
     document.getElementById('btn-copy-link').textContent = t.btnCopyLink;
